@@ -86,6 +86,7 @@ def main() -> None:
             pose = detector.select([item for item in poses if item.reprojection_error_px <= max_error])
             if pose:
                 filtered = _smooth(filtered, pose.camera_T_marker, alpha)
+                base_T_target = None
                 output = {
                     "timestamp_unix_s": time.time(),
                     "camera_timestamp_s": frame.timestamp_s,
@@ -99,13 +100,24 @@ def main() -> None:
                     output["marker_id"] = detector.target_id
                 if handeye:
                     try:
-                        base_T_marker = _base_pose(handeye, filtered, robot_provider, max_robot_pose_age_s)
+                        base_T_target = _base_pose(
+                            handeye, filtered, robot_provider, max_robot_pose_age_s
+                        )
                         base_key = "base_T_marker" if detector.target_type == "aruco" else "base_T_target"
-                        output[base_key] = transform_dict(base_T_marker, "base", detector.frame_name)
+                        output[base_key] = transform_dict(
+                            base_T_target, "base", detector.frame_name
+                        )
                     except (OSError, RuntimeError, ValueError) as exc:
                         output["base_pose_error"] = str(exc)
                 atomic_write_json(tracking["output_file"], output)
-                print("\r" + "camera xyz [m]: " + " ".join(f"{value:+.4f}" for value in filtered[:3, 3]), end="", flush=True)
+                status = "camera xyz [m]: " + " ".join(
+                    f"{value:+.4f}" for value in filtered[:3, 3]
+                )
+                if base_T_target is not None:
+                    status += " | robot/base xyz [m]: " + " ".join(
+                        f"{value:+.4f}" for value in base_T_target[:3, 3]
+                    )
+                print("\r" + status, end="", flush=True)
             else:
                 lost_output = {
                     "timestamp_unix_s": time.time(),

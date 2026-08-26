@@ -75,6 +75,8 @@ rs-aruco-track --config config/rgb_checkerboard.yaml
 
 The tracker reads the calibrated camera matrix and distortion coefficients from `rgb_camera_intrinsics.yaml`. It refuses to run if the live image dimensions differ from the calibration dimensions. Recalibrate after changing resolution, focus, zoom, or any lens setting.
 
+Before hand-eye calibration, the terminal shows only `camera xyz [m]`. After a valid `handeye_calibration.yaml` is available, it shows both `camera xyz [m]` and `robot/base xyz [m]`. The latter is the checkerboard origin expressed in the robot `base` coordinate frame.
+
 ## 5. Use the RGB camera for robot hand-eye calibration
 
 For a fixed camera and a checkerboard rigidly attached to the robot tool, collect paired poses with:
