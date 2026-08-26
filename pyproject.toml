@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "realsense-aruco-tracker"
+version = "0.1.0"
+description = "RealSense ArUco hand-eye calibration and 6D pose tracking"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.23,<2.3",
+  "opencv-contrib-python>=4.8,<5",
+  "pyrealsense2>=2.56,<3",
+  "PyYAML>=6,<7",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7,<9"]
+
+[project.scripts]
+rs-aruco-collect = "realsense_aruco.collect:main"
+rs-handeye-calibrate = "realsense_aruco.calibrate:main"
+rs-aruco-track = "realsense_aruco.track:main"
+rs-camera-info = "realsense_aruco.camera_info:main"
+rs-aruco-generate = "realsense_aruco.generate_marker:main"
+rs-ros-tf-pose = "realsense_aruco.ros_tf_pose:main"
+rgb-checkerboard-calibrate = "realsense_aruco.intrinsic_calibration:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

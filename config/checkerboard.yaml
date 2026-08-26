@@ -1,0 +1,23 @@
+# Profile for the photographed marker-aware checkerboard.
+# Confirm square_size_m by measuring the centre-to-centre pitch of adjacent corners.
+camera:
+  serial: null
+  width: 1280
+  height: 720
+  fps: 30
+
+target:
+  type: checkerboard
+  columns: 14
+  rows: 9
+  square_size_m: 0.010
+  marker_required: true
+
+tracking:
+  handeye_file: handeye_calibration.yaml
+  robot_pose_file: robot_pose.json
+  output_file: checkerboard_pose.json
+  show_window: true
+  max_reprojection_error_px: 1.0
+  smoothing_alpha: 0.25
+  max_robot_pose_age_s: 0.25

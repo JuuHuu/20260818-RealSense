@@ -1,0 +1,27 @@
+# Ordinary USB/RGB camera profile. Device 0 normally means /dev/video0.
+camera:
+  type: opencv
+  device: 0
+  width: 1280
+  height: 720
+  fps: 30
+  fourcc: MJPG
+  intrinsics_file: rgb_camera_intrinsics.yaml
+
+# These are internal-corner counts, not printed-square counts.
+# This profile matches the existing marker-aware 14 by 9 board.
+target:
+  type: checkerboard
+  columns: 14
+  rows: 9
+  square_size_m: 0.010
+  marker_required: true
+
+tracking:
+  handeye_file: handeye_calibration.yaml
+  robot_pose_file: robot_pose.json
+  output_file: checkerboard_pose.json
+  show_window: true
+  max_reprojection_error_px: 1.0
+  smoothing_alpha: 0.25
+  max_robot_pose_age_s: 0.25
